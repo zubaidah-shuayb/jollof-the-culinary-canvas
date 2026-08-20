@@ -1,0 +1,482 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * JOLLOF. design system
+ * Cinematic dark foundation: near black, deep brown, warm red, burnt orange,
+ * muted gold, cream, subtle green. All colors in oklch.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand palette */
+  --color-char: var(--char);
+  --color-cocoa: var(--cocoa);
+  --color-ember: var(--ember);
+  --color-flame: var(--flame);
+  --color-gold: var(--gold);
+  --color-cream: var(--cream);
+  --color-leaf: var(--leaf);
+
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --char: oklch(0.14 0.012 40);
+  --cocoa: oklch(0.24 0.036 47);
+  --ember: oklch(0.52 0.176 27);
+  --flame: oklch(0.66 0.168 47);
+  --gold: oklch(0.79 0.098 82);
+  --cream: oklch(0.94 0.017 82);
+  --leaf: oklch(0.55 0.07 148);
+
+  --background: var(--char);
+  --foreground: var(--cream);
+  --card: oklch(0.18 0.018 42);
+  --card-foreground: var(--cream);
+  --popover: oklch(0.18 0.018 42);
+  --popover-foreground: var(--cream);
+  --primary: var(--ember);
+  --primary-foreground: var(--cream);
+  --secondary: var(--cocoa);
+  --secondary-foreground: var(--cream);
+  --muted: oklch(0.22 0.02 45);
+  --muted-foreground: oklch(0.7 0.024 70);
+  --accent: var(--flame);
+  --accent-foreground: var(--char);
+  --destructive: oklch(0.58 0.2 27);
+  --destructive-foreground: var(--cream);
+  --border: oklch(0.32 0.024 50 / 55%);
+  --input: oklch(0.32 0.024 50 / 55%);
+  --ring: var(--flame);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: var(--ember);
+    color: var(--cream);
+  }
+}
+
+@utility text-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+@utility text-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+@utility hairline {
+  background-color: var(--color-border);
+}
+
+@utility hairline-y {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+@utility shell {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 88rem;
+  padding-inline: 1.5rem;
+  @media (min-width: 1024px) {
+    padding-inline: 4rem;
+  }
+}
+
+/* Film grain overlay */
+@utility grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility vignette {
+  background: radial-gradient(
+    120% 90% at 50% 40%,
+    transparent 35%,
+    var(--char) 100%
+  );
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+/* ---------- Hero atmosphere ---------- */
+
+/* Warm directional key light falling across the food */
+@utility key-light {
+  background:
+    radial-gradient(
+      55% 45% at 50% 34%,
+      color-mix(in oklab, var(--flame) 22%, transparent) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, color-mix(in oklab, var(--char) 70%, transparent) 0%, transparent 42%);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+/* Deep falloff so type always sits on darkness */
+@utility hero-floor {
+  background: linear-gradient(
+    to top,
+    var(--char) 4%,
+    color-mix(in oklab, var(--char) 94%, transparent) 30%,
+    color-mix(in oklab, var(--char) 62%, transparent) 62%,
+    transparent 100%
+  );
+}
+
+@utility scroll-rule {
+  background: linear-gradient(to bottom, var(--flame), transparent);
+}
+
+@keyframes steam-rise {
+  0% {
+    transform: translate3d(-50%, 12%, 0) scale(0.85) rotate(-2deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-50%, -78%, 0) scale(1.55) rotate(3deg);
+    opacity: 0;
+  }
+}
+
+@utility steam-plume {
+  position: absolute;
+  bottom: 22%;
+  aspect-ratio: 1 / 2.2;
+  border-radius: 50%;
+  filter: blur(38px);
+  background: radial-gradient(
+    circle at 50% 65%,
+    color-mix(in oklab, var(--cream) 70%, transparent) 0%,
+    transparent 68%
+  );
+  animation: steam-rise linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes mote-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(18px, -120px, 0);
+    opacity: 0;
+  }
+}
+
+@utility mote {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--gold);
+  animation: mote-drift linear infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steam-plume,
+  .mote,
+  .animate-marquee {
+    animation: none !important;
+  }
+}
+
+
+/* ---------- Chapter 02: the ingredient world ---------- */
+
+/* The deep end of the room the camera has moved into */
+@utility ing-room {
+  background:
+    radial-gradient(
+      70% 55% at 62% 42%,
+      color-mix(in oklab, var(--cocoa) 55%, transparent) 0%,
+      transparent 72%
+    ),
+    linear-gradient(180deg, var(--char) 0%, color-mix(in oklab, var(--cocoa) 26%, var(--char)) 60%, var(--char) 100%);
+}
+
+/* Per-beat environment light behind the dominant subject */
+@utility ing-glow {
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--glow, var(--flame)) 34%, transparent) 0%,
+    color-mix(in oklab, var(--glow, var(--flame)) 10%, transparent) 42%,
+    transparent 70%
+  );
+  filter: blur(46px);
+  mix-blend-mode: screen;
+}
+
+/* Cut-out placeholder stills, grounded with a cinematic contact shadow */
+@utility ing-subject {
+  filter: drop-shadow(0 42px 60px oklch(0 0 0 / 0.72)) saturate(0.92) contrast(1.06);
+}
+
+
+/* ---------- Chapter 03: the fire ---------- */
+
+/* Photographic environment plate, pushed deep into shadow */
+@utility fire-plate {
+  filter: brightness(0.62) saturate(1.1) contrast(1.08);
+}
+
+/* The dark cooking room the heat lands in */
+@utility fire-room {
+  background:
+    radial-gradient(
+      80% 60% at 50% 92%,
+      color-mix(in oklab, var(--ember) 30%, transparent) 0%,
+      transparent 68%
+    ),
+    linear-gradient(180deg, oklch(0.05 0.01 40) 0%, color-mix(in oklab, var(--char) 92%, transparent) 55%, oklch(0.06 0.02 34) 100%);
+}
+
+@keyframes fire-breathe {
+  0%,
+  100% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 0.9;
+  }
+  27% {
+    transform: translate(-50%, -1.2%) scale(1.05);
+    opacity: 1;
+  }
+  53% {
+    transform: translate(-50%, 0.6%) scale(0.97);
+    opacity: 0.84;
+  }
+  78% {
+    transform: translate(-50%, -0.6%) scale(1.03);
+    opacity: 0.95;
+  }
+}
+
+/* The heat source: light, never a drawn flame */
+@utility fire-core {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 72%,
+    color-mix(in oklab, var(--gold) 62%, transparent) 0%,
+    color-mix(in oklab, var(--flame) 44%, transparent) 22%,
+    color-mix(in oklab, var(--ember) 26%, transparent) 46%,
+    transparent 72%
+  );
+  filter: blur(52px);
+  mix-blend-mode: screen;
+  animation: fire-breathe 7.5s ease-in-out infinite;
+}
+
+/* Spill light climbing the surrounding surfaces */
+@utility fire-spill {
+  background:
+    radial-gradient(
+      120% 80% at 50% 100%,
+      color-mix(in oklab, var(--ember) 22%, transparent) 0%,
+      transparent 62%
+    );
+  mix-blend-mode: screen;
+}
+
+@keyframes smoke-drift {
+  0% {
+    transform: translate3d(-2%, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -2%, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-2%, 0, 0) scale(1);
+  }
+}
+
+@utility fire-smoke {
+  background: radial-gradient(
+    60% 50% at 50% 90%,
+    color-mix(in oklab, var(--cocoa) 60%, transparent) 0%,
+    transparent 72%
+  );
+  filter: blur(46px);
+  animation: smoke-drift 26s ease-in-out infinite;
+}
+
+@keyframes ember-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.7);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(var(--ember-x, 20px), calc(var(--ember-y, 70vh) * -1), 0) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@utility ember {
+  position: absolute;
+  bottom: -2%;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px color-mix(in oklab, var(--flame) 70%, transparent);
+  animation: ember-rise linear infinite;
+  will-change: transform, opacity;
+}
+
+/* Cheap heat shimmer plate, displaced by an SVG turbulence filter */
+@utility heat-plate {
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--flame) 12%, transparent) 0%,
+    transparent 78%
+  );
+  mix-blend-mode: screen;
+}
+
+/* The pot emerging from the dark */
+@utility fire-pot {
+  filter: brightness(0.9) contrast(1.12);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 88%, black 45%, transparent 92%);
+  mask-image: radial-gradient(120% 100% at 50% 88%, black 45%, transparent 92%);
+}
+
+/* ---------- The final reveal ---------- */
+
+@utility jollof-key {
+  background:
+    radial-gradient(
+      60% 50% at 52% 44%,
+      color-mix(in oklab, var(--gold) 16%, transparent) 0%,
+      transparent 72%
+    );
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ember,
+  .fire-core,
+  .fire-smoke {
+    animation: none !important;
+  }
+}
+
+
+/* ---------- Creator signature ---------- */
+
+/* Quiet underline that draws in on hover/focus — no flash, no bounce. */
+.signature-name {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  transition: color 400ms ease;
+}
+
+.signature-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1), opacity 620ms ease;
+}
+
+.signature-name:hover,
+.signature-name:focus-visible {
+  color: var(--gold);
+}
+
+.signature-name:hover::after,
+.signature-name:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature-name::after {
+    transition: none;
+  }
+}
